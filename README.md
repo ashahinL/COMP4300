@@ -2,6 +2,10 @@
 
 A clean repository for following along with the COMP4300 Game Development course on YouTube.
 
+## Demo
+
+![Assignment 01 Demo](docs/assignment01-demo.gif)
+
 ## Setup
 
 ### Prerequisites
@@ -33,7 +37,7 @@ A clean repository for following along with the COMP4300 Game Development course
 ### Available Presets
 
 - `lecture03` — ImGui + SFML integration
-- `assignment01` — Assignment placeholder
+- `assignment01` — Assignment 1 Code
 
 ### Build a specific preset
 
