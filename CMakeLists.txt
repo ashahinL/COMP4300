@@ -34,10 +34,24 @@ if(APP STREQUAL "lecture03")
         DEPENDS lecture03
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
     )
-
 elseif(APP STREQUAL "assignment01")
-    add_executable(assignment01 apps/assignment01/main.cpp)
-    target_link_libraries(assignment01 PRIVATE SFML::Graphics SFML::Window SFML::System)
+    set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/external/imgui)
+    if(NOT EXISTS ${IMGUI_DIR}/imgui.h)
+        message(FATAL_ERROR "ImGui not found at ${IMGUI_DIR}. Clone it into external/imgui.")
+    endif()
+
+    set(BUILD_SHARED_LIBS ON)
+
+    add_subdirectory(${CMAKE_SOURCE_DIR}/external/imgui-sfml external/imgui-sfml-build)
+
+    add_executable(assignment01 
+        apps/assignment01/main.cpp
+        apps/assignment01/SegmentedShape.cpp
+        apps/assignment01/Rect.cpp
+    )
+    target_include_directories(assignment01 PRIVATE apps/assignment01)
+    target_link_libraries(assignment01 PRIVATE ImGui-SFML::ImGui-SFML SFML::Graphics SFML::Window SFML::System)
+    target_compile_definitions(assignment01 PRIVATE SFML_STATIC=0)
     add_custom_target(run
         COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assignment01
         DEPENDS assignment01
