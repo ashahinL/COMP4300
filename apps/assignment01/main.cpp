@@ -15,7 +15,7 @@ void rectShapesImGuiControl(std::vector<Rect> &rects);
 int main()
 {
     // Create SFML RenderWindow
-    sf::RenderWindow window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "SFML + ImGui Example");
+    auto window = sf::RenderWindow(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "SFML + ImGui Example");
     window.setFramerateLimit(60);
 
     // Initialize ImGui-SFML
@@ -24,32 +24,40 @@ int main()
         return -1;   // Return error if ImGui-SFML initialization fails
     }
 
-    sf::Clock deltaClock;
+    auto deltaClock = sf::Clock{};
 
     // ImGui style and scaling
     ImGui::GetStyle().ScaleAllSizes(2.0f);
     ImGui::GetIO().FontGlobalScale = 2.0f;
 
     // Start drawing my Shapes
-    std::vector<SegmentedShape> arrSegmentedShapes;
+    auto arrSegmentedShapes = std::vector<SegmentedShape>{};
     arrSegmentedShapes.push_back(SegmentedShape{20.0f, 32, sf::Color::Green, 1.1f, 1.1f, 100.0f, 100.0f, std::string("CGreen")});
     arrSegmentedShapes.push_back(SegmentedShape{30.0f, 32, sf::Color::Blue, 1.2f, 1.2f, 200.0f, 200.0f, std::string("CBlue")});
     arrSegmentedShapes.push_back(SegmentedShape{50.0f, 32, sf::Color::Cyan, 1.3f, 1.3f, 300.0f, 300.0f, std::string("CCyan")});
     arrSegmentedShapes.push_back(SegmentedShape{50.0f, 3, sf::Color::Cyan, 1.4f, 1.4f, 400.0f, 400.0f, std::string("TCyan")});   // Triangle
     arrSegmentedShapes.push_back(SegmentedShape{50.0f, 6, sf::Color::Blue, 1.5f, 1.5f, 500.0f, 500.0f, std::string("HBlue")});   // Hexangular
 
-    std::vector<Rect> arrRect;
+    auto arrRect = std::vector<Rect>{};
     arrRect.push_back(Rect{50.0f, 50.0f, sf::Color::White, 1.6f, 1.6f, 600.0f, 600.0f, std::string("RWhite")});
     arrRect.push_back(Rect{10.0f, 70.0f, sf::Color::Blue, 1.7f, 1.7f, 150.0f, 350.0f, std::string("RBlue")});
 
     // Main loop
     while (window.isOpen())
     {
-        while (const std::optional event = window.pollEvent())
+        while (auto event = window.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
             {
                 window.close();
+            }
+
+            if (auto *keyPressedEvent = event->getIf<sf::Event::KeyPressed>())
+            {
+                if (keyPressedEvent->scancode == sf::Keyboard::Scancode::Escape)
+                {
+                    window.close();
+                }
             }
             // Process ImGui events
             ImGui::SFML::ProcessEvent(window, *event);
@@ -111,10 +119,10 @@ void segmentedShapesImGuiControl(std::vector<SegmentedShape> &shapes)
     {
         if (ImGui::BeginCombo("SegmentedShapes", combo_preview_value))
         {
-            
+
             for (int i = 0; i < shapes.size(); i++)
             {
-                const bool is_selected = (item_selected_idx == i);
+                auto is_selected = (item_selected_idx == i);
                 if (ImGui::Selectable(items[i], is_selected))
                     item_selected_idx = i;
 
