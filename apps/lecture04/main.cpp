@@ -3,10 +3,23 @@
 #include <SFML/Window.hpp>
 #include "imgui.h"
 #include "imgui-SFML.h"
+#include "Entity.hpp"
 #include "utils.hpp"
 
 int main()
 {
+    // Simple Entity/Component usage
+    Entity player;
+    player.setName("Player");
+    player.addComponent<PositionComponent>(100.0f, 200.0f);
+    player.addComponent<VelocityComponent>(1.5f, -0.5f);
+    player.addComponent<ColorComponent>(255, 0, 0, 255);
+    if (player.hasComponent<PositionComponent>())
+    {
+        auto &pos = player.getComponent<PositionComponent>();
+        std::cout << player.getName() << " position: (" << pos.getX() << ", " << pos.getY() << ")\n";
+    }
+
     // Create SFML RenderWindow
     auto window = sf::RenderWindow(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "SFML + ImGui Example");
     window.setFramerateLimit(60);
