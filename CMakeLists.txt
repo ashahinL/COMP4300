@@ -57,6 +57,29 @@ elseif(APP STREQUAL "assignment01")
         DEPENDS assignment01
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
     )
+elseif(APP STREQUAL "lecture04")
+    set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/external/imgui)
+    if(NOT EXISTS ${IMGUI_DIR}/imgui.h)
+        message(FATAL_ERROR "ImGui not found at ${IMGUI_DIR}. Clone it into external/imgui.")
+    endif()
+
+    set(BUILD_SHARED_LIBS ON)
+
+    add_subdirectory(${CMAKE_SOURCE_DIR}/external/imgui-sfml external/imgui-sfml-build)
+
+    add_executable(lecture04 
+        apps/lecture04/main.cpp
+        apps/lecture04/Entity.cpp
+        apps/lecture04/Component.cpp
+    )
+    target_include_directories(lecture04 PRIVATE apps/lecture04)
+    target_link_libraries(lecture04 PRIVATE ImGui-SFML::ImGui-SFML SFML::Graphics SFML::Window SFML::System)
+    target_compile_definitions(lecture04 PRIVATE SFML_STATIC=0)
+    add_custom_target(run
+        COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/lecture04
+        DEPENDS lecture04
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    )
 else()
-    message(FATAL_ERROR "Unknown APP: ${APP}. Use one of: lecture03, assignment01")
+    message(FATAL_ERROR "Unknown APP: ${APP}. Use one of: lecture03, assignment01, lecture04")
 endif()

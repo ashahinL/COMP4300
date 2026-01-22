@@ -25,6 +25,16 @@
         "APP": "assignment01",
         "CMAKE_BUILD_TYPE": "Debug"
       }
+    },
+    {
+      "name": "lecture04",
+      "displayName": "Lecture 04",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/lecture04",
+      "cacheVariables": {
+        "APP": "lecture04",
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
     }
   ],
   "buildPresets": [
@@ -35,6 +45,10 @@
     {
       "name": "assignment01",
       "configurePreset": "assignment01"
+    },
+    {
+      "name": "lecture04",
+      "configurePreset": "lecture04"
     }
   ]
 }
